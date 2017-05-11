@@ -129,7 +129,7 @@ void PatchRemoteGot(pid_t pid, const char* libPath, long origFuncAddr, long targ
 	FILE* elfFile = fopen(libPath, "r");
 	Elf32_Shdr* gotSectionHeader = (Elf32_Shdr*) malloc(sizeof(Elf32_Shdr));
 	GetSectionHeaderByName(gotSectionHeader, elfFile, ".got");
-	
+
 	size_t gotSectionSize = gotSectionHeader->sh_size;
 	off_t gotAddrOffset = gotSectionHeader->sh_addr;
 	free(gotSectionHeader);
@@ -145,6 +145,7 @@ void PatchRemoteGot(pid_t pid, const char* libPath, long origFuncAddr, long targ
 		{
 			printf("found!!\n");
 			PtraceWrite(pid, (uint8_t*)addr, (uint8_t*)&targetFuncAddr, sizeof(long));
+			break;
 		}
 	}
 
